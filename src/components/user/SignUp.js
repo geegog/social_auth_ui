@@ -3,13 +3,20 @@ import { Button, Form, FormGroup, Input } from 'reactstrap';
 import { API_BASE_URL, GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, GITHUB_AUTH_URL } from '../constants/index'
 import { Link, Redirect } from "react-router-dom";
 import { FacebookLoginButton, GoogleLoginButton, GithubLoginButton  } from "react-social-login-buttons";
+import auth from './auth/auth'
 
 import axios from 'axios';
 import cogoToast from 'cogo-toast';
 
 export default class Signup extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.authObj = new auth();
+    }
+
     render() {
-        if(this.props.authenticated) {
+        if(this.authObj.isAthenticated()) {
             return <Redirect
                 to={{
                 pathname: "/",

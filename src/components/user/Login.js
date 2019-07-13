@@ -1,13 +1,20 @@
 import React from 'react';
 import { Button, Form, FormGroup, Input } from 'reactstrap';
-import { API_BASE_URL, GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, GITHUB_AUTH_URL, ACCESS_TOKEN } from '../constants/index'
+import { API_BASE_URL, GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, GITHUB_AUTH_URL } from '../constants/index'
 import { Link, Redirect } from "react-router-dom";
 import { FacebookLoginButton, GoogleLoginButton, GithubLoginButton  } from "react-social-login-buttons";
+import auth from './auth/auth'
 
 import axios from 'axios';
 import cogoToast from 'cogo-toast';
 
 export default class Login extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.authObj = new auth();
+    }
+
     componentDidMount() {
         // If the OAuth2 login encounters an error, the user is redirected to the /login page with an error.
         // Here we display the error and then remove the error query parameter from the location.
@@ -25,7 +32,7 @@ export default class Login extends React.Component {
     }
 
     render() {
-        if (this.props.authenticated) {
+        if (this.authObj.isAthenticated()) {
             return <Redirect
                 to={{
                     pathname: "/",
@@ -69,6 +76,8 @@ class LoginForm extends React.Component {
             email: '',
             password: ''
         };
+        
+        this.authObj = new auth();
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -95,7 +104,7 @@ class LoginForm extends React.Component {
             data: JSON.stringify(loginRequest)
         })
             .then(response => {
-                localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                this.authObj.setToken(response.data.accessToken);
                 cogoToast.success("Login successfully!");
                 this.props.history.push("/");
             })
