@@ -1,33 +1,79 @@
-.App {
+.login-container {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+
+.login-content {
+  background: #fff;
+  box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+  border-radius: 2px;
+  width: 500px;
+  display: inline-block;
+  margin-top: 30px;
+  vertical-align: middle;
+  position: relative;    
+  padding: 35px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.social-btn {
+  margin-bottom: 15px;
+  font-weight: 400;
+  font-size: 16px;
 }
 
-.App-link {
-  color: #61dafb;
+.social-btn img {
+  height: 32px;
+  float: left;
+  margin-top: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.social-btn.google {
+  margin-top: 7px;
+}
+
+.social-btn.facebook img {
+  height: 24px;
+  margin-left: 3px;
+}
+
+.social-btn.github img {
+  height: 24px;
+  margin-left: 3px;
+}
+
+.signup-link {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+}
+
+.login-title {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 30px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+
+/**
+  Or separator
+**/
+
+.or-separator {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  position: relative;
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-size: 1em;    
+}
+
+.or-text {
+  position: absolute;
+  left: 46%;
+  top: 0;
+  background: #fff;
+  padding: 10px;
+  color: rgba(0,0,0,.45);
 }

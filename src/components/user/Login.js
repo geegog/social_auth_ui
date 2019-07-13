@@ -1,10 +1,67 @@
 import React from 'react';
-import { API_BASE_URL, GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, GITHUB_AUTH_URL, ACCESS_TOKEN } from '../constants/index.js'
+import { Button, Form, FormGroup, Input } from 'reactstrap';
+import { API_BASE_URL, GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, GITHUB_AUTH_URL, ACCESS_TOKEN } from '../constants/index'
+import { Link, Redirect } from "react-router-dom";
+import { FacebookLoginButton, GoogleLoginButton, GithubLoginButton  } from "react-social-login-buttons";
 
 import axios from 'axios';
 import cogoToast from 'cogo-toast';
 
-export default class LoginForm extends React.Component {
+export default class Login extends React.Component {
+    componentDidMount() {
+        // If the OAuth2 login encounters an error, the user is redirected to the /login page with an error.
+        // Here we display the error and then remove the error query parameter from the location.
+        if (this.props.location.state && this.props.location.state.error) {
+            setTimeout(() => {
+                cogoToast.error(this.props.location.state.error, {
+                    hideAfter: 5
+                });
+                this.props.history.replace({
+                    pathname: this.props.location.pathname,
+                    state: {}
+                });
+            }, 100);
+        }
+    }
+
+    render() {
+        if (this.props.authenticated) {
+            return <Redirect
+                to={{
+                    pathname: "/",
+                    state: { from: this.props.location }
+                }} />;
+        }
+
+        return (
+            <div className="login-container">
+                <div className="login-content">
+                    <h1 className="login-title">Login Page</h1>
+                    <SocialLogin />
+                    <div className="or-separator">
+                        <span className="or-text">OR</span>
+                    </div>
+                    <LoginForm {...this.props} />
+                    <span className="signup-link">New user? <Link to="/signup">Sign up!</Link></span>
+                </div>
+            </div>
+        );
+    }
+}
+
+class SocialLogin extends React.Component {
+    render() {
+        return (
+            <div className="social-login">
+                <FacebookLoginButton onClick={() => window.location = FACEBOOK_AUTH_URL} />
+                <GoogleLoginButton onClick={() => window.location = GOOGLE_AUTH_URL} />
+                <GithubLoginButton onClick={() => window.location = GITHUB_AUTH_URL} />
+            </div>
+        );
+    }
+}
+
+class LoginForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -51,34 +108,19 @@ export default class LoginForm extends React.Component {
                     cogoToast.error(error.message);
                 }
             })
-
-        login(loginRequest)
-            .then(response => {
-                localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-                Alert.success("You're successfully logged in!");
-                this.props.history.push("/");
-            }).catch(error => {
-                Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
-            });
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div className="form-item">
-                    <input type="email" name="email"
-                        className="form-control" placeholder="Email"
-                        value={this.state.email} onChange={this.handleInputChange} required />
-                </div>
-                <div className="form-item">
-                    <input type="password" name="password"
-                        className="form-control" placeholder="Password"
-                        value={this.state.password} onChange={this.handleInputChange} required />
-                </div>
-                <div className="form-item">
-                    <button type="submit" className="btn btn-block btn-primary">Login</button>
-                </div>
-            </form>
+            <Form onSubmit={this.handleSubmit}>
+                <FormGroup>
+                    <Input required type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleInputChange} />
+                </FormGroup>
+                <FormGroup>
+                    <Input required type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange} />
+                </FormGroup>
+                <Button type="submit" color="primary" className="btn btn-lg btn-block">Login</Button>
+            </Form>
         );
     }
 }
