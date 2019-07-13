@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Nav, NavItem, NavLink } from 'reactstrap';
 
 import OAuth2RedirectHandler from './components/user/auth/OAuth2RedirectHandler';
 import Logout from './components/user/Logout';
@@ -12,24 +13,24 @@ class Routes extends React.Component {
         return (
             <Router>
                 <div>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/login">login</Link>
-                        </li>
-                        <li>
-                            <Link to="/signup">Sign Up</Link>
-                        </li>
+                    <Nav>
+                        <NavItem>
+                            <NavLink tag={Link} to="/">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/login">Login</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/signup">Sign Up</NavLink>
+                        </NavItem>
                         <Logout />
-                    </ul>
+                    </Nav>
 
                     <hr />
 
                     <Route exact path="/" component={Profile} />
                     <Route path="/login" component={Login} />
-                    <Route path="/signup" component={Signup} /> 
+                    <Route path="/signup" component={Signup} />
                     <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
                 </div>
             </Router>

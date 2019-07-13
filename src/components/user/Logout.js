@@ -2,6 +2,8 @@ import React from 'react';
 import auth from './auth/auth'
 import { withRouter } from "react-router-dom";
 
+import { NavItem, NavLink } from 'reactstrap';
+
 const authObj = new auth();
 
 class Logout extends React.Component {
@@ -21,9 +23,9 @@ class Logout extends React.Component {
     render() {
         if (this.authObj.isAthenticated()) {
             return (
-                <li>
-                    <div className="btn-link" onClick={this.handleLogout.bind(this)}>Logout</div>
-                </li>
+                <NavItem>
+                    <NavLink className="logout-link" onClick={this.handleLogout.bind(this)}>Logout</NavLink>
+                </NavItem>
             );
         } else {
             return null;
